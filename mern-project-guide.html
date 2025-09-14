@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MERN Project Guide</title>
+    <style>
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;margin:0;display:flex;color:#333;background-color:#f8f9fa;padding-top:60px}#sidebar{width:280px;position:fixed;height:calc(100% - 60px);background:#fff;border-right:1px solid #ddd;padding:20px;overflow-y:auto;box-shadow:0 0 10px rgba(0,0,0,.05);top:60px}#sidebar h2{margin-top:0;color:#444;border-bottom:2px solid #ffc107;padding-bottom:10px}#sidebar ul{list-style-type:none;padding:0}#sidebar li a{display:block;color:#333;padding:10px 15px;text-decoration:none;border-radius:5px;transition:background-color .2s,color .2s}#sidebar li a:hover{background-color:#e9ecef;color:#0056b3}#main-content{margin-left:320px;padding:20px 40px;width:calc(100% - 320px);padding-top:80px}section{margin-bottom:50px;padding-top:20px}h1,h2,h3{color:#0056b3}h1{border-bottom:1px solid #ccc;padding-bottom:10px}h3{margin-top:30px;border-bottom:1px solid #eee;padding-bottom:5px}code{background-color:#e9ecef;padding:.2em .4em;margin:0;font-size:85%;border-radius:3px;font-family:'Courier New',Courier,monospace}pre{background-color:#2d2d2d;color:#f8f8f2;padding:15px;border-radius:5px;overflow-x:auto}pre code{background-color:transparent;padding:0}.topic-title{font-size:1.2em;font-weight:700;margin-top:20px;margin-bottom:10px;color:#555}.main-nav{width:100%;background-color:#343a40;padding:10px 40px;box-sizing:border-box;position:fixed;top:0;left:0;z-index:1000;display:flex;align-items:center}.main-nav a{color:#fff;text-decoration:none;padding:10px 15px;border-radius:5px;margin-right:10px;font-weight:700}.main-nav a.active{background-color:#ffc107}.main-nav a:hover{background-color:#495057}
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+        <a href="index.html">React</a>
+        <a href="mongodb.html">MongoDB</a>
+        <a href="express.html">Express.js</a>
+        <a href="node.html">Node.js</a>
+        <a href="redux.html">Redux</a>
+        <a href="mern-interactions.html">Interactions</a>
+        <a href="mern-project-guide.html" class="active">Project Guide</a>
+        <a href="state-transfer.html">Transfert d'État</a>
+    </nav>
+    
+    <nav id="sidebar">
+        <h2>Project Steps</h2>
+        <div class="topic-title">Blueprint</div>
+        <ul>
+            <li><a href="#project-setup">Project Setup</a></li>
+            <li><a href="#full-flow">The Full Data Flow</a></li>
+        </ul>
+        <div class="topic-title">Simple Example</div>
+        <ul>
+            <li><a href="#simple-backend">1. Backend: Create API</a></li>
+            <li><a href="#simple-frontend">2. Frontend: Create Form</a></li>
+        </ul>
+        <div class="topic-title">Complex Example</div>
+        <ul>
+            <li><a href="#complex-backend">3. Backend: Read API</a></li>
+            <li><a href="#complex-frontend">4. Frontend: Display Data</a></li>
+        </ul>
+    </nav>
+
+    <main id="main-content">
+        <header>
+            <h1>Building a Full MERN Application</h1>
+        </header>
+        
+        <section id="project-setup">
+            <h2>Blueprint: Project Setup</h2>
+            <p>A typical MERN project is structured with separate folders for the client (React) and the server (Node/Express).</p>
+            <h4>Folder Structure:</h4>
+            <pre><code>mern-project/
+├── client/     // React application
+│   ├── public/
+│   └── src/
+└── server/     // Node.js & Express application
+    ├── models/
+    ├── routes/
+    └── server.js</code></pre>
+
+            <h4>Initial Commands:</h4>
+            <pre><code># 1. Create the root folder
+mkdir mern-project && cd mern-project
+
+# 2. Set up the server
+mkdir server && cd server
+npm init -y
+npm install express mongoose cors
+cd ..
+
+# 3. Set up the client
+npx create-react-app client</code></pre>
+        </section>
+
+        <section id="full-flow">
+            <h2>Blueprint: The Full Data Flow</h2>
+            <p>Here is the complete journey of data from the user's browser to your database.</p>
+            <ol>
+                <li><strong>User Interaction (React):</strong> A user fills out a form in your React component and clicks "Submit".</li>
+                <li><strong>API Request (React):</strong> React uses `fetch` or `axios` to send the form data in an HTTP request (e.g., POST) to your backend server (e.g., `http://localhost:3001/api/users`).</li>
+                <li><strong>Route Handling (Express):</strong> Your Express server, listening for requests, matches the incoming request URL to a specific route handler you've defined.</li>
+                <li><strong>Database Operation (Node/Mongoose):</strong> The route handler's logic uses a Mongoose model to validate and format the data. It then tells MongoDB to save this data as a new document in a collection.</li>
+                <li><strong>Database Execution (MongoDB):</strong> MongoDB saves the data and confirms that the operation was successful.</li>
+                <li><strong>API Response (Express):</strong> The Express server sends a success response (e.g., status 201 with the newly created user) back to your React application.</li>
+                <li><strong>UI Update (React):</strong> Your React app receives the response and can update the UI accordingly (e.g., clear the form, show a success message, or display the new user in a list).</li>
+            </ol>
+        </section>
+
+        <section id="simple-backend">
+            <h2>Simple Example 1: Backend API to Create a User</h2>
+            <p>First, we build the server-side endpoint that will receive and save the data.</p>
+            
+            <h4>Define a Model (`server/models/User.js`)</h4>
+            <pre><code>const mongoose = require('mongoose');
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+});
+module.exports = mongoose.model('User', userSchema);</code></pre>
+            
+            <h4>Create the API Route (`server/routes/users.js`)</h4>
+            <pre><code>const express = require('express');
+const router = express.Router();
+const User = require('../models/User');
+
+// POST /api/users - Create a new user
+router.post('/', async (req, res) => {
+  try {
+    const newUser = new User({
+      name: req.body.name,
+      email: req.body.email,
+    });
+    const savedUser = await newUser.save();
+    res.status(201).json(savedUser);
+  } catch (err) {
+    res.status(400).json({ message: 'Error creating user' });
+  }
+});
+
+module.exports = router;</code></pre>
+            
+            <h4>Set up the main server file (`server/server.js`)</h4>
+            <pre><code>const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+
+const app = express();
+const PORT = 3001;
+const usersRoutes = require('./routes/users');
+
+// Middleware
+app.use(cors()); // Allows cross-origin requests from your React app
+app.use(express.json()); // Parses incoming JSON requests
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost/mern_db');
+
+// Routes
+app.use('/api/users', usersRoutes);
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));</code></pre>
+        </section>
+
+        <section id="simple-frontend">
+            <h2>Simple Example 2: Frontend Form to Submit Data</h2>
+            <p>Now, we build the React component that sends data to the backend API.</p>
+
+            <h4>React Component (`client/src/components/UserForm.js`)</h4>
+            <pre><code>import React, { useState } from 'react';
+
+function UserForm() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const userData = { name, email };
+
+    try {
+      const response = await fetch('http://localhost:3001/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        alert('User created successfully!');
+        setName(''); // Clear form
+        setEmail('');
+      } else {
+        alert('Failed to create user.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Name" required /&gt;
+      &lt;input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" required /&gt;
+      &lt;button type="submit"&gt;Create User&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+
+export default UserForm;</code></pre>
+        </section>
+
+        <section id="complex-backend">
+            <h2>Complex Example 3: Backend API to Read All Users</h2>
+            <p>To make our app more useful, let's create an endpoint to fetch all the users we've created.</p>
+            
+            <h4>Add a GET Route (`server/routes/users.js` - updated)</h4>
+            <pre><code>// ... (existing POST route code) ...
+
+// GET /api/users - Get all users
+router.get('/', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+module.exports = router;</code></pre>
+        </section>
+
+        <section id="complex-frontend">
+            <h2>Complex Example 4: Frontend Component to Display Data</h2>
+            <p>This component uses the `useEffect` hook to fetch data when it first loads and `useState` to store the list of users and a loading state.</p>
+            
+            <h4>React Component (`client/src/components/UserList.js`)</h4>
+            <pre><code>import React, { useState, useEffect } from 'react';
+
+function UserList() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // useEffect runs once when the component mounts
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/api/users');
+        const data = await response.json();
+        setUsers(data); // Store the fetched users in state
+      } catch (error) {
+        console.error('Failed to fetch users:', error);
+      } finally {
+        setLoading(false); // Stop loading, regardless of success or error
+      }
+    };
+
+    fetchUsers();
+  }, []); // The empty dependency array [] ensures this runs only once
+
+  if (loading) {
+    return &lt;p&gt;Loading users...&lt;/p&gt;;
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;User List&lt;/h2&gt;
+      &lt;ul&gt;
+        {users.map(user => (
+          &lt;li key={user._id}&gt;{user.name} ({user.email})&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default UserList;</code></pre>
+        </section>
+
+    </main>
+
+</body>
+</html>

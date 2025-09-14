@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State & Props Transfer</title>
+    <style>
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;margin:0;display:flex;color:#333;background-color:#f8f9fa;padding-top:60px}#sidebar{width:280px;position:fixed;height:calc(100% - 60px);background:#fff;border-right:1px solid #ddd;padding:20px;overflow-y:auto;box-shadow:0 0 10px rgba(0,0,0,.05);top:60px}#sidebar h2{margin-top:0;color:#444;border-bottom:2px solid #6f42c1;padding-bottom:10px}#sidebar ul{list-style-type:none;padding:0}#sidebar li a{display:block;color:#333;padding:10px 15px;text-decoration:none;border-radius:5px;transition:background-color .2s,color .2s}#sidebar li a:hover{background-color:#e9ecef;color:#0056b3}#main-content{margin-left:320px;padding:20px 40px;width:calc(100% - 320px);padding-top:80px}section{margin-bottom:50px;padding-top:20px}h1,h2,h3{color:#0056b3}h1{border-bottom:1px solid #ccc;padding-bottom:10px}h3{margin-top:30px;border-bottom:1px solid #eee;padding-bottom:5px}code{background-color:#e9ecef;padding:.2em .4em;margin:0;font-size:85%;border-radius:3px;font-family:'Courier New',Courier,monospace}pre{background-color:#2d2d2d;color:#f8f8f2;padding:15px;border-radius:5px;overflow-x:auto}pre code{background-color:transparent;padding:0}.main-nav{width:100%;background-color:#343a40;padding:10px 40px;box-sizing:border-box;position:fixed;top:0;left:0;z-index:1000;display:flex;align-items:center}.main-nav a{color:#fff;text-decoration:none;padding:10px 15px;border-radius:5px;margin-right:10px;font-weight:700}.main-nav a.active{background-color:#6f42c1}.main-nav a:hover{background-color:#495057}
+        /* Bilingual layout styles */
+        .bilingual-container { display: flex; gap: 40px; }
+        .column { flex: 1; min-width: 0; }
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+        <a href="index.html">React</a>
+        <a href="mongodb.html">MongoDB</a>
+        <a href="express.html">Express.js</a>
+        <a href="node.html">Node.js</a>
+        <a href="redux.html" class="active">Redux</a>
+        <a href="mern-interactions.html">Interactions</a>
+        <a href="guide-projet-mern.html">Guide de Projet</a>
+        <a href="state-transfer.html">Transfert d'État</a>
+    </nav>
+    
+    <nav id="sidebar">
+        <h2>Topics</h2>
+        <a href="#child-to-parent">Child to Parent</a>
+        <a href="#unrelated-components">Unrelated Components</a>
+    </nav>
+
+    <main id="main-content">
+        <header>
+            <h1>Passing Data Between Components</h1>
+        </header>
+        
+        <section id="child-to-parent">
+            <h2>From Child to Parent Component</h2>
+            <div class="bilingual-container">
+                <div class="column">
+                    <h3>English</h3>
+                    <p>To pass data from a child to a parent, the parent passes a <strong>callback function</strong> down to the child as a prop. The child then calls this function, passing the data it wants to send up as an argument. This pattern is called <strong>"lifting state up."</strong></p>
+                    <pre><code>import React, { useState } from 'react';
+
+// Child receives a function as a prop
+function ChildComponent({ onData }) {
+  const handleClick = () => {
+    const dataToSend = "Hello from Child!";
+    // Call the parent's function with data
+    onData(dataToSend);
+  };
+  return &lt;button onClick={handleClick}&gt;Send Data to Parent&lt;/button&gt;;
+}
+
+// Parent defines the function and holds state
+function ParentComponent() {
+  const [dataFromChild, setDataFromChild] = useState('');
+
+  const handleChildData = (childData) => {
+    setDataFromChild(childData);
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;Data from child: {dataFromChild}&lt;/h3&gt;
+      &lt;ChildComponent onData={handleChildData} /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                </div>
+                <div class="column">
+                    <h3>Français</h3>
+                    <p>Pour passer des données d'un enfant à un parent, le parent passe une <strong>fonction de rappel</strong> à l'enfant via une prop. L'enfant appelle ensuite cette fonction en lui passant les données à remonter en argument. Ce modèle est appelé la <strong>« remontée d'état »</strong>.</p>
+                    <pre><code>import React, { useState } from 'react';
+
+// L'enfant reçoit une fonction en prop
+function ComposantEnfant({ onData }) {
+  const handleClick = () => {
+    const dataToSend = "Bonjour du composant Enfant !";
+    // Appeler la fonction du parent avec les données
+    onData(dataToSend);
+  };
+  return &lt;button onClick={handleClick}&gt;Envoyer au Parent&lt;/button&gt;;
+}
+
+// Le parent définit la fonction et détient l'état
+function ComposantParent() {
+  const [donneesDeEnfant, setDonneesDeEnfant] = useState('');
+
+  const gererDonneesEnfant = (donnees) => {
+    setDonneesDeEnfant(donnees);
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;Données de l'enfant : {donneesDeEnfant}&lt;/h3&gt;
+      &lt;ComposantEnfant onData={gererDonneesEnfant} /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="unrelated-components">
+            <h2>Between Unrelated Components</h2>
+            <div class="bilingual-container">
+                <div class="column">
+                    <h3>English</h3>
+                    <p>To share state between components that don't have a direct parent-child relationship, you should use a state management solution. For many cases, React's built-in <strong>Context API</strong> is the perfect tool. For larger apps, a library like <strong>Redux</strong> or <strong>Zustand</strong> is recommended.</p>
+                    <pre><code>import React, { useState, useContext, createContext } from 'react';
+
+// 1. Create the context
+const AppContext = createContext();
+
+// 2. Create the provider component
+function AppProvider({ children }) {
+  const [user, setUser] = useState({ name: 'Guest' });
+  return (
+    &lt;AppContext.Provider value={{ user, setUser }}&gt;
+      {children}
+    &lt;/AppContext.Provider&gt;
+  );
+}
+
+// Component that consumes the context
+function UserProfile() {
+  const { user } = useContext(AppContext);
+  return &lt;p&gt;Welcome, {user.name}!&lt;/p&gt;;
+}
+
+// Another component that updates the context
+function LoginButton() {
+  const { setUser } = useContext(AppContext);
+  return &lt;button onClick={() => setUser({ name: 'Admin' })}&gt;Log In&lt;/button&gt;;
+}
+
+// Main App
+function App() {
+  return (
+    &lt;AppProvider&gt;
+      &lt;UserProfile /&gt;
+      &lt;LoginButton /&gt;
+    &lt;/AppProvider&gt;
+  );
+}</code></pre>
+                </div>
+                <div class="column">
+                    <h3>Français</h3>
+                    <p>Pour partager un état entre des composants sans lien de parenté direct, vous devez utiliser une solution de gestion d'état. L'<strong>API Contexte</strong> intégrée à React est parfaite dans de nombreux cas. Pour les applications plus vastes, une bibliothèque comme <strong>Redux</strong> ou <strong>Zustand</strong> est recommandée.</p>
+                    <pre><code>import React, { useState, useContext, createContext } from 'react';
+
+// 1. Créer le contexte
+const AppContext = createContext();
+
+// 2. Créer le composant fournisseur (provider)
+function AppProvider({ children }) {
+  const [user, setUser] = useState({ name: 'Invité' });
+  return (
+    &lt;AppContext.Provider value={{ user, setUser }}&gt;
+      {children}
+    &lt;/AppContext.Provider&gt;
+  );
+}
+
+// Composant qui consomme le contexte
+function ProfilUtilisateur() {
+  const { user } = useContext(AppContext);
+  return &lt;p&gt;Bienvenue, {user.name} !&lt;/p&gt;;
+}
+
+// Un autre composant qui met à jour le contexte
+function BoutonLogin() {
+  const { setUser } = useContext(AppContext);
+  return &lt;button onClick={() => setUser({ name: 'Admin' })}&gt;Connexion&lt;/button&gt;;
+}
+
+// App principale
+function App() {
+  return (
+    &lt;AppProvider&gt;
+      &lt;ProfilUtilisateur /&gt;
+      &lt;BoutonLogin /&gt;
+    &lt;/AppProvider&gt;
+  );
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>

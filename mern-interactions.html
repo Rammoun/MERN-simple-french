@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactions de la Stack MERN</title>
+    <style>
+        /* Copiez-collez les mêmes styles que dans vos autres fichiers */
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;margin:0;display:flex;color:#333;background-color:#f8f9fa;padding-top:60px}#sidebar{width:280px;position:fixed;height:calc(100% - 60px);background:#fff;border-right:1px solid #ddd;padding:20px;overflow-y:auto;box-shadow:0 0 10px rgba(0,0,0,.05);top:60px}#sidebar h2{margin-top:0;color:#444;border-bottom:2px solid #fd7e14;padding-bottom:10px}#sidebar ul{list-style-type:none;padding:0}#sidebar li a{display:block;color:#333;padding:10px 15px;text-decoration:none;border-radius:5px;transition:background-color .2s,color .2s}#sidebar li a:hover{background-color:#e9ecef;color:#0056b3}#main-content{margin-left:320px;padding:20px 40px;width:calc(100% - 320px);padding-top:80px}section{margin-bottom:50px;padding-top:20px}h1,h2,h3{color:#0056b3}h1{border-bottom:1px solid #ccc;padding-bottom:10px}h3{margin-top:30px;border-bottom:1px solid #eee;padding-bottom:5px}code{background-color:#e9ecef;padding:.2em .4em;margin:0;font-size:85%;border-radius:3px;font-family:'Courier New',Courier,monospace}pre{background-color:#2d2d2d;color:#f8f8f2;padding:15px;border-radius:5px;overflow-x:auto}pre code{background-color:transparent;padding:0}.topic-title{font-size:1.2em;font-weight:700;margin-top:20px;margin-bottom:10px;color:#555}.main-nav{width:100%;background-color:#343a40;padding:10px 40px;box-sizing:border-box;position:fixed;top:0;left:0;z-index:1000;display:flex;align-items:center}.main-nav a{color:#fff;text-decoration:none;padding:10px 15px;border-radius:5px;margin-right:10px;font-weight:700}.main-nav a.active{background-color:#fd7e14}.main-nav a:hover{background-color:#495057}
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+        <a href="index.html">React</a>
+        <a href="mongodb.html">MongoDB</a>
+        <a href="express.html">Express.js</a>
+        <a href="node.html">Node.js</a>
+        <a href="redux.html">Redux</a>
+        <a href="mern-interactions.html" class="active">Interactions</a>
+        <a href="guide-projet-mern.html">Guide de Projet</a>
+        <a href="state-transfer.html">Transfert d'État</a>
+    </nav>
+    
+    <nav id="sidebar">
+        <h2>Interactions de la Stack</h2>
+        <ul>
+            <li><a href="#react-redux">React & Redux</a></li>
+            <li><a href="#node-express">Node.js & Express.js</a></li>
+            <li><a href="#backend-mongodb">Backend & MongoDB</a></li>
+        </ul>
+    </nav>
+
+    <main id="main-content">
+        <header>
+            <h1>Comment la Stack MERN Fonctionne Ensemble</h1>
+        </header>
+        
+        <section id="react-redux">
+            <h2>🎭 React & Redux : L'UI & le Metteur en Scène</h2>
+            <p>Ceci est votre équipe **front-end**. React construit les composants d'interface que l'utilisateur voit, tandis que Redux gère l'état global de l'application de manière prévisible.</p>
+            <h3>Comment ils interagissent :</h3>
+            <p>Un composant React ne modifie jamais directement l'état global. Au lieu de cela, il **dépêche une action** décrivant ce qui s'est passé. Une fonction **reducer** prend ensuite cette action, calcule le nouvel état, et le **store** central se met à jour. Les composants qui dépendent de cette partie de l'état (en utilisant le hook `useSelector`) se re-rendent automatiquement.</p>
+            
+            <h3>Exemple : Flux de connexion</h3>
+            <p>Un `LoginComponent` dépêche une action `loginSuccess` avec les données de l'utilisateur. Le reducer de `userSlice` met à jour l'état. Un composant `UserProfile`, qui utilise `useSelector` pour lire l'état de l'utilisateur, se re-rend alors pour afficher le nom de l'utilisateur connecté.</p>
+            
+            <h4>Slice Redux (userSlice.js)</h4>
+            <pre><code>import { createSlice } from '@reduxjs/toolkit';
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState: { userInfo: null, status: 'loggedOut' },
+  reducers: {
+    loginSuccess: (state, action) => {
+      state.userInfo = action.payload; // L'objet utilisateur
+      state.status = 'loggedIn';
+    },
+    logout: (state) => {
+      state.userInfo = null;
+      state.status = 'loggedOut';
+    },
+  },
+});
+
+export const { loginSuccess, logout } = userSlice.actions;
+export default userSlice.reducer;</code></pre>
+
+            <h4>Composant React (UserProfile.js)</h4>
+            <pre><code>import { useSelector } from 'react-redux';
+
+function UserProfile() {
+  // Sélectionner la partie userInfo de l'état depuis le store Redux
+  const { userInfo } = useSelector((state) => state.user);
+
+  if (!userInfo) {
+    return &lt;p&gt;Veuillez vous connecter.&lt;/p&gt;;
+  }
+
+  return &lt;h1&gt;Bienvenue, {userInfo.name} !&lt;/h1&gt;;
+}</code></pre>
+        </section>
+
+        <hr>
+
+        <section id="node-express">
+            <h2>🚗 Node.js & Express.js : Le Moteur & la Voiture</h2>
+            <p>Ceci est votre fondation **back-end**. Node.js est l'environnement d'exécution JavaScript (le moteur) qui vous permet d'exécuter du JS sur le serveur. Express.js est un framework (la voiture) qui s'exécute sur Node.js pour rendre la construction d'applications web et d'API beaucoup plus simple.</p>
+            <h3>Comment ils interagissent :</h3>
+            <p>Express fournit des méthodes faciles à utiliser pour le routage (gestion de différentes URL), la gestion des requêtes et des réponses, et l'utilisation de middleware. Il abstrait le code complexe de bas niveau que vous devriez autrement écrire en utilisant le module `http` intégré de Node.</p>
+            
+            <h3>Exemple : Un serveur d'API simple</h3>
+            <p>Ici, Express crée un serveur et définit une route pour `/api/hello`. Ce code est exécuté par le moteur Node.js.</p>
+            
+            <h4>Fichier serveur (server.js)</h4>
+            <pre><code>// 1. Importer Express (le framework)
+const express = require('express');
+
+// 2. Créer une application avec Express
+const app = express();
+const PORT = 3001;
+
+// 3. Définir une route en utilisant les méthodes simples d'Express
+// Quand une requête GET arrive sur '/api/hello', exécuter cette fonction
+app.get('/api/hello', (req, res) => {
+  res.json({ message: 'Bonjour depuis le serveur !' });
+});
+
+// 4. Démarrer le serveur en utilisant la puissance sous-jacente de Node.js, simplifiée par Express
+app.listen(PORT, () => {
+  console.log(`Le serveur tourne sur http://localhost:${PORT}`);
+});</code></pre>
+        </section>
+
+        <hr>
+
+        <section id="backend-mongodb">
+            <h2>🧑‍🍳 Le Backend & MongoDB : La Cuisine & le Garde-Manger</h2>
+            <p>C'est ainsi que votre serveur interagit avec votre base de données. Votre code de serveur Express/Node est responsable de la connexion à la base de données MongoDB pour récupérer, créer, mettre à jour ou supprimer des données.</p>
+            <h3>Comment ils interagissent :</h3>
+            <p>L'interaction est gérée par un pilote de base de données ou un ODM (Object Data Mapper) comme **Mongoose**. Votre gestionnaire de route Express reçoit une requête. À l'intérieur du gestionnaire, vous utilisez des méthodes Mongoose (`.find()`, `.findById()`, `.create()`) pour interroger la base de données MongoDB. Ces méthodes étant asynchrones, vous utilisez généralement `async/await`.</p>
+            
+            <h3>Exemple : Récupérer des utilisateurs de la base de données</h3>
+            <p>Une route Express `/api/users` utilise un modèle Mongoose pour trouver tous les utilisateurs dans la collection `users` de MongoDB et les renvoie sous forme de réponse JSON.</p>
+            
+            <h4>Connexion à la base de données & Modèle (ex: dans models/User.js)</h4>
+            <pre><code>const mongoose = require('mongoose');
+
+// Se connecter à MongoDB
+mongoose.connect('mongodb://localhost/maBaseDeDonnees');
+
+// Définir le schéma pour un utilisateur
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+});
+
+// Créer un modèle à partir du schéma
+const User = mongoose.model('User', userSchema);
+module.exports = User;</code></pre>
+
+            <h4>Route Express (ex: dans routes/users.js)</h4>
+            <pre><code>const express = require('express');
+const router = express.Router();
+const User = require('../models/User'); // Importer le modèle Mongoose
+
+// GET /api/users - Récupérer tous les utilisateurs
+router.get('/', async (req, res) => {
+  try {
+    // Utiliser le modèle Mongoose pour trouver tous les documents dans la collection users
+    const users = await User.find();
+    // Renvoyer les utilisateurs trouvés sous forme de réponse JSON
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+module.exports = router;</code></pre>
+        </section>
+
+    </main>
+
+</body>
+</html>

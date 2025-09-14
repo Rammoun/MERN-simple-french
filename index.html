@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation React 19</title>
+    <style>
+        /* Copiez-collez les mêmes styles que dans vos autres fichiers */
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;margin:0;display:flex;color:#333;background-color:#f8f9fa;padding-top:60px}#sidebar{width:280px;position:fixed;height:calc(100% - 60px);background:#fff;border-right:1px solid #ddd;padding:20px;overflow-y:auto;box-shadow:0 0 10px rgba(0,0,0,.05);top:60px}#sidebar h2{margin-top:0;color:#444;border-bottom:2px solid #007bff;padding-bottom:10px}#sidebar ul{list-style-type:none;padding:0}#sidebar li a{display:block;color:#333;padding:10px 15px;text-decoration:none;border-radius:5px;transition:background-color .2s,color .2s}#sidebar li a:hover{background-color:#e9ecef;color:#0056b3}#main-content{margin-left:320px;padding:20px 40px;width:calc(100% - 320px);padding-top:80px}section{margin-bottom:50px;padding-top:20px}h1,h2,h3{color:#0056b3}h1{border-bottom:1px solid #ccc;padding-bottom:10px}h3{margin-top:30px;border-bottom:1px solid #eee;padding-bottom:5px}code{background-color:#e9ecef;padding:.2em .4em;margin:0;font-size:85%;border-radius:3px;font-family:'Courier New',Courier,monospace}pre{background-color:#2d2d2d;color:#f8f8f2;padding:15px;border-radius:5px;overflow-x:auto}pre code{background-color:transparent;padding:0}.topic-title{font-size:1.2em;font-weight:700;margin-top:20px;margin-bottom:10px;color:#555}.main-nav{width:100%;background-color:#343a40;padding:10px 40px;box-sizing:border-box;position:fixed;top:0;left:0;z-index:1000;display:flex;align-items:center}.main-nav a{color:#fff;text-decoration:none;padding:10px 15px;border-radius:5px;margin-right:10px;font-weight:700}.main-nav a.active{background-color:#007bff}.main-nav a:hover{background-color:#495057}
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+        <a href="index.html">React</a>
+        <a href="mongodb.html">MongoDB</a>
+        <a href="express.html" class="active">Express.js</a>
+        <a href="node.html">Node.js</a>
+        <a href="redux.html">Redux</a>
+        <a href="mern-interactions.html">Interactions</a>
+        <a href="guide-projet-mern.html">Guide de Projet</a>
+        <a href="state-transfer.html">Transfert d'État</a>
+    </nav>
+    
+    <nav id="sidebar">
+        <h2>Sujets React</h2>
+        <div class="topic-title">🔰 Débutant</div>
+        <ul>
+            <li><a href="#what-is-react">Qu'est-ce que React ?</a></li>
+            <li><a href="#jsx">JSX</a></li>
+            <li><a href="#components">Composants</a></li>
+            <li><a href="#props">Props</a></li>
+            <li><a href="#state">State (État)</a></li>
+        </ul>
+        <div class="topic-title">🛠️ Intermédiaire</div>
+        <ul>
+            <li><a href="#events">Gestion des Événements</a></li>
+            <li><a href="#conditional-rendering">Rendu Conditionnel</a></li>
+            <li><a href="#lists-keys">Listes et Clés</a></li>
+            <li><a href="#hooks">Hooks (useState, useEffect)</a></li>
+        </ul>
+        <div class="topic-title">🚀 Avancé & React 19</div>
+        <ul>
+            <li><a href="#actions">React 19 : Actions</a></li>
+            <li><a href="#use-hook">React 19 : Le Hook `use`</a></li>
+            <li><a href="#server-components">React 19 : Server Components</a></li>
+            <li><a href="#refs">Refs et le DOM</a></li>
+            <li><a href="#context">API Context</a></li>
+        </ul>
+    </nav>
+
+    <main id="main-content">
+        <header>
+            <h1>Tout sur React & React 19</h1>
+        </header>
+        
+        <section id="what-is-react">
+            <h2>🔰 Qu'est-ce que React ?</h2>
+            <p>React est une bibliothèque JavaScript pour construire des interfaces utilisateur. Elle vous permet de créer des composants d'interface réutilisables et de gérer leur état efficacement.</p>
+        </section>
+
+        <section id="jsx">
+            <h2>🔰 JSX (JavaScript XML)</h2>
+            <p>JSX est une extension de syntaxe pour JavaScript qui ressemble à du HTML. Elle permet d'écrire du code de type HTML directement dans vos fichiers JavaScript.</p>
+            <h3>Exemple :</h3>
+            <pre><code>// Ceci est du JSX, pas du HTML !
+const element = &lt;h1&gt;Bonjour, le monde !&lt;/h1&gt;;
+
+// Vous pouvez intégrer des expressions JavaScript avec des accolades.
+const nom = 'Gemini';
+const salutation = &lt;p&gt;Bonjour, {nom}&lt;/p&gt;;</code></pre>
+        </section>
+
+        <section id="components">
+            <h2>🔰 Composants</h2>
+            <p>Les composants sont les briques de base d'une application React. Ce sont comme des fonctions JavaScript indépendantes et réutilisables qui retournent du JSX pour décrire une partie de l'interface.</p>
+            <h3>Exemple : Un Composant Fonctionnel</h3>
+            <pre><code>function Bienvenue(props) {
+  return &lt;h1&gt;Bonjour, {props.nom}&lt;/h1&gt;;
+}
+
+// Utilisation du composant :
+const app = &lt;Bienvenue nom="Sarah" /&gt;;</code></pre>
+        </section>
+        
+        <section id="props">
+            <h2>🔰 Props (Propriétés)</h2>
+            <p>Les props sont des arguments passés aux composants React. Elles sont en lecture seule et permettent de transmettre des données d'un composant parent à un composant enfant.</p>
+            <h3>Exemple : Passer et utiliser des props</h3>
+            <pre><code>// Composant Parent
+function App() {
+  return &lt;ProfilUtilisateur nom="Alex" age={30} /&gt;;
+}
+
+// Composant Enfant recevant les props
+function ProfilUtilisateur(props) {
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Nom : {props.nom}&lt;/p&gt;
+      &lt;p&gt;Âge : {props.age}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </section>
+
+        <section id="state">
+            <h2>🔰 State (État)</h2>
+            <p>L'état (state) est un objet qui représente les parties de l'application qui peuvent changer. Contrairement aux props, l'état est privé et entièrement contrôlé par le composant. Quand l'état change, React re-render le composant.</p>
+            <h3>Exemple : Utiliser l'état avec le hook `useState`</h3>
+            <pre><code>import { useState } from 'react';
+
+function Compteur() {
+  // `count` est la variable d'état, `setCount` est la fonction pour la mettre à jour.
+  const [count, setCount] = useState(0);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Vous avez cliqué {count} fois&lt;/p&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;
+        Cliquez-moi
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </section>
+        
+        </main>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation MongoDB</title>
+    <style>
+        /* Copiez-collez les mêmes styles que dans vos autres fichiers */
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;margin:0;display:flex;color:#333;background-color:#f8f9fa;padding-top:60px}#sidebar{width:280px;position:fixed;height:calc(100% - 60px);background:#fff;border-right:1px solid #ddd;padding:20px;overflow-y:auto;box-shadow:0 0 10px rgba(0,0,0,.05);top:60px}#sidebar h2{margin-top:0;color:#444;border-bottom:2px solid #13aa52;padding-bottom:10px}#sidebar ul{list-style-type:none;padding:0}#sidebar li a{display:block;color:#333;padding:10px 15px;text-decoration:none;border-radius:5px;transition:background-color .2s,color .2s}#sidebar li a:hover{background-color:#e9ecef;color:#0056b3}#main-content{margin-left:320px;padding:20px 40px;width:calc(100% - 320px);padding-top:80px}section{margin-bottom:50px;padding-top:20px}h1,h2,h3{color:#0056b3}h1{border-bottom:1px solid #ccc;padding-bottom:10px}h3{margin-top:30px;border-bottom:1px solid #eee;padding-bottom:5px}code{background-color:#e9ecef;padding:.2em .4em;margin:0;font-size:85%;border-radius:3px;font-family:'Courier New',Courier,monospace}pre{background-color:#2d2d2d;color:#f8f8f2;padding:15px;border-radius:5px;overflow-x:auto}pre code{background-color:transparent;padding:0}.topic-title{font-size:1.2em;font-weight:700;margin-top:20px;margin-bottom:10px;color:#555}.main-nav{width:100%;background-color:#343a40;padding:10px 40px;box-sizing:border-box;position:fixed;top:0;left:0;z-index:1000;display:flex;align-items:center}.main-nav a{color:#fff;text-decoration:none;padding:10px 15px;border-radius:5px;margin-right:10px;font-weight:700}.main-nav a.active{background-color:#13aa52}.main-nav a:hover{background-color:#495057}
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+        <a href="index.html">React</a>
+        <a href="mongodb.html" class="active">MongoDB</a>
+        <a href="express.html">Express.js</a>
+        <a href="node.html">Node.js</a>
+        <a href="redux.html">Redux</a>
+        <a href="mern-interactions.html">Interactions</a>
+        <a href="guide-projet-mern.html">Guide de Projet</a>
+        <a href="state-transfer.html">Transfert d'État</a>
+    </nav>
+    
+    <nav id="sidebar">
+        <h2>Sujets MongoDB</h2>
+        <div class="topic-title">🔰 Débutant</div>
+        <ul>
+            <li><a href="#what-is-mongodb">Qu'est-ce que MongoDB ?</a></li>
+            <li><a href="#documents-collections">Documents & Collections</a></li>
+            <li><a href="#data-types">Types de Données (BSON)</a></li>
+        </ul>
+        <div class="topic-title">🛠️ Intermédiaire</div>
+        <ul>
+            <li><a href="#crud">Opérations CRUD</a></li>
+            <li><a href="#querying">Interroger les Données</a></li>
+            <li><a href="#indexing">L'Indexation</a></li>
+        </ul>
+        <div class="topic-title">🚀 Avancé</div>
+        <ul>
+            <li><a href="#aggregation">Framework d'Agrégation</a></li>
+            <li><a href="#transactions">Transactions</a></li>
+            <li><a href="#modeling">Modélisation des Données</a></li>
+        </ul>
+    </nav>
+
+    <main id="main-content">
+        <header>
+            <h1>Tout sur MongoDB</h1>
+        </header>
+        
+        <section id="what-is-mongodb">
+            <h2>🔰 Qu'est-ce que MongoDB ?</h2>
+            <p>MongoDB est une <strong>base de données NoSQL</strong> populaire qui stocke les données dans des documents flexibles de type JSON. Contrairement aux bases de données relationnelles traditionnelles (comme SQL) qui utilisent des tables et des lignes, le modèle de document de MongoDB correspond directement aux objets dans le code de votre application, ce qui facilite son utilisation.</p>
+        </section>
+
+        <section id="documents-collections">
+            <h2>🔰 Documents & Collections</h2>
+            <p>Dans MongoDB, les données sont stockées dans une structure composée de collections et de documents.</p>
+            <ul>
+                <li><strong>Document :</strong> Un enregistrement unique dans MongoDB, structuré comme un objet BSON (similaire à JSON). Les documents sont constitués de paires champ-valeur.</li>
+                <li><strong>Collection :</strong> Un groupe de documents. Une collection est l'équivalent d'une table dans une base de données relationnelle. Elle existe au sein d'une seule base de données.</li>
+            </ul>
+            <h3>Exemple : Un Document</h3>
+            <pre><code>// Ce document pourrait se trouver dans une collection 'users'
+{
+  "_id": ObjectId("632a1d2b7aa1f83c4d5a8b90"),
+  "name": "Alice",
+  "age": 28,
+  "email": "alice@example.com",
+  "tags": ["developpeur", "react"]
+}</code></pre>
+        </section>
+
+        <section id="data-types">
+            <h2>🔰 Types de Données (BSON)</h2>
+            <p>MongoDB stocke les documents en <strong>BSON</strong> (Binary JSON), une sérialisation encodée en binaire de documents de type JSON. BSON étend le modèle JSON pour fournir des types de données supplémentaires, tels que `ObjectId`, `Date`, et des données binaires, qui ne sont pas disponibles en JSON.</p>
+        </section>
+
+        <section id="crud">
+            <h2>🛠️ Opérations CRUD</h2>
+            <p>CRUD est l'acronyme des quatre fonctions de base du stockage persistant : Créer (Create), Lire (Read), Mettre à jour (Update), et Supprimer (Delete).</p>
+            <h3>Exemple : Commandes CRUD dans `mongosh`</h3>
+            <pre><code>// Utiliser une base de données
+use('monMagasin');
+
+// CRÉER : Insérer un document dans la collection 'produits'
+db.produits.insertOne({ nom: "Ordinateur Portable", prix: 1200, en_stock: true });
+
+// LIRE : Trouver les documents où le prix est inférieur à 1500
+db.produits.find({ prix: { $lt: 1500 } });
+
+// METTRE À JOUR : Changer le prix de "Ordinateur Portable"
+db.produits.updateOne({ nom: "Ordinateur Portable" }, { $set: { prix: 1150 } });
+
+// SUPPRIMER : Supprimer tous les produits qui ne sont pas en stock
+db.produits.deleteMany({ en_stock: false });</code></pre>
+        </section>
+
+        <section id="querying">
+            <h2>🛠️ Interroger les Données</h2>
+            <p>Interroger (querying) est le processus de récupération de données de la base de données. MongoDB fournit un langage de requête riche pour filtrer et trouver des documents spécifiques au sein d'une collection.</p>
+            <h3>Exemple : Opérateurs de requête</h3>
+            <pre><code>// Trouver les utilisateurs qui ont plus de 25 ans
+db.users.find({ age: { $gt: 25 } });
+
+// Trouver les utilisateurs dont le nom est "Alice" OU "Bob"
+db.users.find({ name: { $in: ["Alice", "Bob"] } });
+
+// Trouver les utilisateurs qui sont développeurs ET qui ont plus de 30 ans
+db.users.find({ tags: "developpeur", age: { $gt: 30 } });</code></pre>
+        </section>
+
+        <section id="indexing">
+            <h2>🛠️ L'Indexation</h2>
+            <p>Les index permettent l'exécution efficace des requêtes. Sans index, MongoDB doit effectuer un balayage de collection, c'est-à-dire scanner chaque document d'une collection, pour sélectionner les documents qui correspondent à la requête. Les index stockent une petite partie des données de la collection dans une forme facile à parcourir.</p>
+            <h3>Exemple : Créer un index</h3>
+            <pre><code>// Créer un index ascendant sur le champ 'email' dans la collection 'users'
+// Cela rendra les requêtes filtrant par email beaucoup plus rapides.
+db.users.createIndex({ email: 1 });</code></pre>
+        </section>
+
+        <section id="aggregation">
+            <h2>🚀 Framework d'Agrégation</h2>
+            <p>Le framework d'agrégation est un moyen puissant de traiter des enregistrements de données et de retourner des résultats calculés. Il rassemble des valeurs de divers documents, les regroupe, et peut effectuer une variété d'opérations sur les données groupées pour retourner un résultat unique. C'est similaire à la clause `GROUP BY` de SQL mais beaucoup plus puissant.</p>
+            <h3>Exemple : Pipeline d'agrégation</h3>
+            <pre><code>// Calculer l'âge moyen des utilisateurs, groupés par leur tag favori
+db.users.aggregate([
+  // Étape 1 : Filtrer les documents où le champ 'tags' existe
+  { $match: { tags: { $exists: true } } },
+  
+  // Étape 2 : Grouper par le premier tag et calculer l'âge moyen
+  { $group: { _id: "$tags.0", ageMoyen: { $avg: "$age" } } },
+  
+  // Étape 3 : Trier les résultats par ageMoyen par ordre décroissant
+  { $sort: { ageMoyen: -1 } }
+]);</code></pre>
+        </section>
+
+        <section id="transactions">
+            <h2>🚀 Transactions</h2>
+            <p>MongoDB prend en charge les transactions ACID multi-documents. Cela signifie que vous pouvez effectuer une série d'opérations, et si une seule opération échoue, la transaction entière est annulée, garantissant que vos données restent cohérentes. C'est crucial pour les opérations complexes qui doivent soit réussir complètement, soit échouer complètement.</p>
+        </section>
+        
+        <section id="modeling">
+            <h2>🚀 Modélisation des Données</h2>
+            <p>La modélisation des données dans MongoDB consiste à structurer vos documents et collections. Le schéma flexible permet deux techniques de modélisation principales :</p>
+            <ul>
+                <li><strong>Intégration (Dénormalisation) :</strong> Inclure des données associées dans un seul document. C'est rapide pour les lectures mais peut conduire à de grands documents.</li>
+                <li><strong>Référencement (Normalisation) :</strong> Stocker les données associées dans des collections séparées et les lier avec des références (comme `ObjectId`). C'est plus flexible mais nécessite plusieurs requêtes pour récupérer les données associées.</li>
+            </ul>
+        </section>
+    </main>
+
+</body>
+</html>

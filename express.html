@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Express.js</title>
+    <style>
+        /* Copiez-collez les mêmes styles que dans vos autres fichiers */
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;margin:0;display:flex;color:#333;background-color:#f8f9fa;padding-top:60px}#sidebar{width:280px;position:fixed;height:calc(100% - 60px);background:#fff;border-right:1px solid #ddd;padding:20px;overflow-y:auto;box-shadow:0 0 10px rgba(0,0,0,.05);top:60px}#sidebar h2{margin-top:0;color:#444;border-bottom:2px solid #68a063;padding-bottom:10px}#sidebar ul{list-style-type:none;padding:0}#sidebar li a{display:block;color:#333;padding:10px 15px;text-decoration:none;border-radius:5px;transition:background-color .2s,color .2s}#sidebar li a:hover{background-color:#e9ecef;color:#0056b3}#main-content{margin-left:320px;padding:20px 40px;width:calc(100% - 320px);padding-top:80px}section{margin-bottom:50px;padding-top:20px}h1,h2,h3{color:#0056b3}h1{border-bottom:1px solid #ccc;padding-bottom:10px}h3{margin-top:30px;border-bottom:1px solid #eee;padding-bottom:5px}code{background-color:#e9ecef;padding:.2em .4em;margin:0;font-size:85%;border-radius:3px;font-family:'Courier New',Courier,monospace}pre{background-color:#2d2d2d;color:#f8f8f2;padding:15px;border-radius:5px;overflow-x:auto}pre code{background-color:transparent;padding:0}.topic-title{font-size:1.2em;font-weight:700;margin-top:20px;margin-bottom:10px;color:#555}.main-nav{width:100%;background-color:#343a40;padding:10px 40px;box-sizing:border-box;position:fixed;top:0;left:0;z-index:1000;display:flex;align-items:center}.main-nav a{color:#fff;text-decoration:none;padding:10px 15px;border-radius:5px;margin-right:10px;font-weight:700}.main-nav a.active{background-color:#68a063}.main-nav a:hover{background-color:#495057}
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+        <a href="index.html">React</a>
+        <a href="mongodb.html">MongoDB</a>
+        <a href="express.html" class="active">Express.js</a>
+        <a href="node.html">Node.js</a>
+        <a href="redux.html">Redux</a>
+        <a href="mern-interactions.html">Interactions</a>
+        <a href="guide-projet-mern.html">Guide de Projet</a>
+        <a href="state-transfer.html">Transfert d'État</a>
+    </nav>
+    
+    <nav id="sidebar">
+        <h2>Sujets Express.js</h2>
+        <div class="topic-title">🔰 Débutant</div>
+        <ul>
+            <li><a href="#what-is-express">Qu'est-ce qu'Express.js ?</a></li>
+            <li><a href="#setup-server">Mettre en place un serveur</a></li>
+            <li><a href="#routing">Le Routage</a></li>
+        </ul>
+        <div class="topic-title">🛠️ Intermédiaire</div>
+        <ul>
+            <li><a href="#middleware">Middleware</a></li>
+            <li><a href="#req-res">Requête & Réponse</a></li>
+            <li><a href="#static-files">Servir des fichiers statiques</a></li>
+        </ul>
+        <div class="topic-title">🚀 Avancé</div>
+        <ul>
+            <li><a href="#error-handling">Gestion des erreurs</a></li>
+            <li><a href="#router">Module Router</a></li>
+            <li><a href="#rest-api">Construire une API REST</a></li>
+        </ul>
+    </nav>
+
+    <main id="main-content">
+        <header>
+            <h1>Tout sur Express.js</h1>
+        </header>
+        
+        <section id="what-is-express">
+            <h2>🔰 Qu'est-ce qu'Express.js ?</h2>
+            <p>Express.js est un <strong>framework d'application web pour Node.js</strong>, minimaliste et flexible, qui fournit un ensemble robuste de fonctionnalités pour créer des applications web et mobiles. Il simplifie le processus de création d'un serveur et de gestion des requêtes web, ce qui en fait le standard de facto pour la création de backends avec Node.js.</p>
+        </section>
+
+        <section id="setup-server">
+            <h2>🔰 Mettre en place un serveur</h2>
+            <p>Mettre en place un serveur web de base avec Express est très simple. Vous devez importer (`require`) le module express, créer une application, et lui dire d'écouter sur un port spécifique.</p>
+            <h3>Exemple : Un serveur "Hello World"</h3>
+            <pre><code>// 1. Importer express
+const express = require('express');
+
+// 2. Créer une application express
+const app = express();
+const port = 3000;
+
+// 3. Définir une route pour l'URL racine ('/')
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+// 4. Démarrer le serveur
+app.listen(port, () => {
+  console.log(`Exemple d'application écoutant sur le port ${port}`);
+});</code></pre>
+        </section>
+        
+        <section id="routing">
+            <h2>🔰 Le Routage</h2>
+            <p>Le routage fait référence à la manière dont les points d'accès (URI) d'une application répondent aux requêtes des clients. Vous définissez des routes pour différentes méthodes HTTP (`GET`, `POST`, etc.) et différents motifs d'URL.</p>
+            <h3>Exemple : Routes de base</h3>
+            <pre><code>// Répondre à une requête GET sur la page d'accueil
+app.get('/', (req, res) => {
+  res.send('Ceci est la page d\'accueil.');
+});
+
+// Répondre à une requête POST sur /users
+app.post('/users', (req, res) => {
+  res.send('Utilisateur créé !');
+});
+
+// Route avec un paramètre pour obtenir un utilisateur spécifique
+app.get('/users/:userId', (req, res) => {
+  res.send(`Récupération des données pour l'utilisateur : ${req.params.userId}`);
+});</code></pre>
+        </section>
+
+        <section id="middleware">
+            <h2>🛠️ Middleware</h2>
+            <p>Les fonctions middleware sont des fonctions qui ont accès à l'objet <strong>requête (`req`)</strong>, à l'objet <strong>réponse (`res`)</strong>, et à la fonction `next` dans le cycle requête-réponse de l'application. Elles peuvent exécuter n'importe quel code, modifier les objets requête et réponse, mettre fin au cycle ou appeler le prochain middleware dans la pile.</p>
+            <h3>Exemple : Un middleware de log personnalisé</h3>
+            <pre><code>const myLogger = (req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next(); // Passer le contrôle à la fonction middleware suivante
+};
+
+// Utiliser le middleware pour toutes les requêtes
+app.use(myLogger);
+
+// Middleware intégré pour analyser les corps de requête JSON
+app.use(express.json());</code></pre>
+        </section>
+        
+        <section id="req-res">
+            <h2>🛠️ Requête & Réponse</h2>
+            <p>Dans chaque gestionnaire de route et middleware, vous travaillez avec les objets `req` et `res`.</p>
+            <ul>
+                <li>`req` (Requête) : Contient des informations sur la requête HTTP entrante, telles que `req.params`, `req.query`, `req.body`, et `req.headers`.</li>
+                <li>`res` (Réponse) : Utilisé pour renvoyer une réponse au client. Les méthodes courantes incluent `res.send()`, `res.json()`, `res.status()`, et `res.render()`.</li>
+            </ul>
+        </section>
+
+        <section id="static-files">
+            <h2>🛠️ Servir des fichiers statiques</h2>
+            <p>Pour servir des fichiers statiques tels que des images, des fichiers CSS et des fichiers JavaScript, utilisez la fonction middleware intégrée `express.static`. Vous spécifiez un dossier à partir duquel servir les ressources statiques.</p>
+            <h3>Exemple : Servir des fichiers depuis un répertoire 'public'</h3>
+            <pre><code>// Cela rendra les fichiers du dossier 'public' accessibles depuis le web
+// ex: http://localhost:3000/images/logo.png
+app.use(express.static('public'));</code></pre>
+        </section>
+
+        <section id="error-handling">
+            <h2>🚀 Gestion des erreurs</h2>
+            <p>Express dispose d'un gestionnaire d'erreurs par défaut, mais vous pouvez définir un middleware de gestion d'erreurs personnalisé pour plus de contrôle. Un middleware de gestion d'erreurs est défini avec quatre arguments `(err, req, res, next)`.</p>
+            <h3>Exemple : Gestionnaire d'erreurs 404 et personnalisé</h3>
+            <pre><code>// Gestionnaire 404 (si aucune autre route ne correspond)
+app.use((req, res, next) => {
+  res.status(404).send("Désolé, cette page n'existe pas !");
+});
+
+// Gestionnaire d'erreurs général
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Quelque chose s\'est mal passé !');
+});</code></pre>
+        </section>
+
+        <section id="router">
+            <h2>🚀 Module Router</h2>
+            <p>La classe `express.Router` peut être utilisée pour créer des gestionnaires de routes modulaires et montables. Une instance de `Router` est un système complet de middleware et de routage ; c'est pourquoi on l'appelle souvent une "mini-application". Cela aide à organiser vos routes dans des fichiers séparés.</p>
+            <h3>Exemple : Utilisation de `express.Router`</h3>
+            <pre><code>// Dans routes/users.js
+const

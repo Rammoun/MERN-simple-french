@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Node.js</title>
+    <style>
+        /* Copiez-collez les mêmes styles que dans vos autres fichiers */
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;margin:0;display:flex;color:#333;background-color:#f8f9fa;padding-top:60px}#sidebar{width:280px;position:fixed;height:calc(100% - 60px);background:#fff;border-right:1px solid #ddd;padding:20px;overflow-y:auto;box-shadow:0 0 10px rgba(0,0,0,.05);top:60px}#sidebar h2{margin-top:0;color:#444;border-bottom:2px solid #8cc84b;padding-bottom:10px}#sidebar ul{list-style-type:none;padding:0}#sidebar li a{display:block;color:#333;padding:10px 15px;text-decoration:none;border-radius:5px;transition:background-color .2s,color .2s}#sidebar li a:hover{background-color:#e9ecef;color:#0056b3}#main-content{margin-left:320px;padding:20px 40px;width:calc(100% - 320px);padding-top:80px}section{margin-bottom:50px;padding-top:20px}h1,h2,h3{color:#0056b3}h1{border-bottom:1px solid #ccc;padding-bottom:10px}h3{margin-top:30px;border-bottom:1px solid #eee;padding-bottom:5px}code{background-color:#e9ecef;padding:.2em .4em;margin:0;font-size:85%;border-radius:3px;font-family:'Courier New',Courier,monospace}pre{background-color:#2d2d2d;color:#f8f8f2;padding:15px;border-radius:5px;overflow-x:auto}pre code{background-color:transparent;padding:0}.topic-title{font-size:1.2em;font-weight:700;margin-top:20px;margin-bottom:10px;color:#555}.main-nav{width:100%;background-color:#343a40;padding:10px 40px;box-sizing:border-box;position:fixed;top:0;left:0;z-index:1000;display:flex;align-items:center}.main-nav a{color:#fff;text-decoration:none;padding:10px 15px;border-radius:5px;margin-right:10px;font-weight:700}.main-nav a.active{background-color:#8cc84b}.main-nav a:hover{background-color:#495057}
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+        <a href="index.html">React</a>
+        <a href="mongodb.html">MongoDB</a>
+        <a href="express.html">Express.js</a>
+        <a href="node.html" class="active">Node.js</a>
+        <a href="redux.html">Redux</a>
+        <a href="mern-interactions.html">Interactions</a>
+        <a href="guide-projet-mern.html">Guide de Projet</a>
+        <a href="state-transfer.html">Transfert d'État</a>
+    </nav>
+    
+    <nav id="sidebar">
+        <h2>Sujets Node.js</h2>
+        <div class="topic-title">🔰 Débutant</div>
+        <ul>
+            <li><a href="#what-is-node">Qu'est-ce que Node.js ?</a></li>
+            <li><a href="#event-loop">La Boucle d'Événements</a></li>
+            <li><a href="#modules">Les Modules</a></li>
+        </ul>
+        <div class="topic-title">🛠️ Intermédiaire</div>
+        <ul>
+            <li><a href="#async">Programmation Asynchrone</a></li>
+            <li><a href="#fs-module">Module File System (fs)</a></li>
+            <li><a href="#npm">NPM</a></li>
+        </ul>
+        <div class="topic-title">🚀 Avancé</div>
+        <ul>
+            <li><a href="#streams">Les Streams</a></li>
+            <li><a href="#event-emitter">L'Émetteur d'Événements</a></li>
+            <li><a href="#child-processes">Les Processus Enfants</a></li>
+        </ul>
+    </nav>
+
+    <main id="main-content">
+        <header>
+            <h1>Tout sur Node.js</h1>
+        </header>
+        
+        <section id="what-is-node">
+            <h2>🔰 Qu'est-ce que Node.js ?</h2>
+            <p>Node.js est un <strong>environnement d'exécution</strong> JavaScript back-end, open-source et multiplateforme, qui s'exécute sur le moteur V8 et exécute le code JavaScript en dehors d'un navigateur web. Il permet aux développeurs d'utiliser JavaScript pour écrire des outils en ligne de commande et pour des scripts côté serveur.</p>
+        </section>
+
+        <section id="event-loop">
+            <h2>🔰 La Boucle d'Événements</h2>
+            <p>La boucle d'événements (event loop) est le secret derrière l'I/O non bloquant de Node.js. Elle permet à Node.js d'effectuer des opérations d'I/O (comme lire un fichier ou faire une requête réseau) de manière asynchrone. Lorsqu'une opération asynchrone est lancée, elle est déléguée au noyau du système. La boucle d'événements peut alors continuer à exécuter d'autre code. Lorsque l'opération se termine, un rappel (callback) est placé dans une file d'attente et exécuté par la boucle d'événements lorsque la pile d'appels (call stack) est libre.</p>
+        </section>
+        
+        <section id="modules">
+            <h2>🔰 Les Modules</h2>
+            <p>Node.js utilise un système de modules pour organiser le code en fichiers séparés. Vous pouvez inclure des modules intégrés, des modules tiers (via npm), ou vos propres modules personnalisés.</p>
+            <ul>
+                <li><strong>CommonJS (CJS) :</strong> Le système de modules traditionnel de Node.js, utilisant `require()` et `module.exports`.</li>
+                <li><strong>ES Modules (ESM) :</strong> Le standard moderne pour JavaScript, utilisant `import` et `export`. Node.js le prend en charge avec les fichiers `.mjs` ou en ajoutant `"type": "module"` dans `package.json`.</li>
+            </ul>
+            <h3>Exemple : CommonJS vs. ES Modules</h3>
+            <pre><code>// CommonJS
+const fs = require('fs');
+module.exports = { maFonction: () => {} };
+
+// ES Modules
+import fs from 'fs';
+export const maFonction = () => {};</code></pre>
+        </section>
+
+        <section id="async">
+            <h2>🛠️ Programmation Asynchrone</h2>
+            <p>Comme Node.js est non bloquant, vous devez gérer correctement les opérations asynchrones. La manière moderne de le faire est avec `async/await`, qui est du sucre syntaxique par-dessus les Promesses (Promises).</p>
+            <h3>Exemple : Lire un fichier avec Async/Await</h3>
+            <pre><code>const fs = require('fs/promises'); // Utiliser la version basée sur les Promesses
+
+async function lireFichierAsync() {
+  try {
+    const data = await fs.readFile('mon-fichier.txt', 'utf8');
+    console.log('Contenu du fichier :', data);
+  } catch (err) {
+    console.error('Erreur lors de la lecture du fichier :', err);
+  }
+}
+
+lireFichierAsync();</code></pre>
+        </section>
+        
+        <section id="fs-module">
+            <h2>🛠️ Module File System (fs)</h2>
+            <p>Le module `fs` est un module central de Node.js qui permet d'interagir avec le système de fichiers. Vous pouvez l'utiliser pour lire, écrire, mettre à jour et supprimer des fichiers.</p>
+            <h3>Exemple : Écrire dans un fichier</h3>
+            <pre><code>const fs = require('fs');
+
+const contenu = 'Ceci est le contenu à écrire.';
+
+// Écriture asynchrone
+fs.writeFile('nouveau-fichier.txt', contenu, 'utf8', (err) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log('Le fichier a été écrit avec succès !');
+});
+
+// Écriture synchrone (bloque la boucle d'événements - à utiliser avec parcimonie)
+// fs.writeFileSync('nouveau-fichier-sync.txt', contenu);</code></pre>
+        </section>
+
+        <section id="npm">
+            <h2>🛠️ NPM (Node Package Manager)</h2>
+            <p>NPM est le gestionnaire de paquets par défaut pour Node.js et le plus grand registre de logiciels au monde. Il est utilisé pour installer, partager et gérer des paquets tiers (dépendances) pour votre projet. Le fichier `package.json` est le cœur de tout projet Node.js, définissant ses métadonnées et ses dépendances.</p>
+        </section>
+
+        <section id="streams">
+            <h2>🚀 Les Streams</h2>
+            <p>Les streams (flux) sont l'un des concepts fondamentaux qui alimentent les applications Node.js. Ce sont des objets qui vous permettent de lire des données depuis une source ou d'écrire des données vers une destination de manière continue. Ils sont incroyablement utiles pour travailler avec de grandes quantités de données, comme la lecture d'un gros fichier ou la diffusion de vidéo, sans avoir à tout charger en mémoire en même temps.</p>
+            <h3>Exemple : "Piper" un flux lisible vers un flux inscriptible</h3>
+            <pre><code>const fs = require('fs');
+
+// Créer un flux lisible à partir d'un gros fichier
+const readableStream = fs.createReadStream('gros-fichier-entree.txt');
+
+// Créer un flux inscriptible vers un nouveau fichier
+const writableStream = fs.createWriteStream('fichier-sortie.txt');
+
+// 'pipe' gère le flux de données, la contre-pression (backpressure) et les erreurs automatiquement
+readableStream.pipe(writableStream);
+
+console.log('La copie du fichier est en cours...');</code></pre>
+        </section>
+
+        <section id="event-emitter">
+            <h2>🚀 L'Émetteur d'Événements (EventEmitter)</h2>
+            <p>De nombreux objets intégrés de Node (comme les requêtes HTTP, les réponses et les streams) sont basés sur une architecture événementielle asynchrone. Ces objets émettent des événements nommés qui provoquent l'appel de fonctions ("listeners"). Ce modèle est facilité par la classe `EventEmitter`.</p>
+            <h3>Exemple : Créer un événement personnalisé</h3>
+            <pre><code>const EventEmitter = require('events');
+
+class MonEmetteur extends EventEmitter {}
+
+const monEmetteur = new MonEmetteur();
+
+// Enregistrer un "listener" pour l'événement 'evenementPerso'
+monEmetteur.on('evenementPerso', (arg) => {
+  console.log('Un événement a eu lieu !', arg);
+});
+
+// Émettre l'événement
+monEmetteur.emit('evenementPerso', { data: 'données importantes' });</code></pre>
+        </section>
+        
+        <section id="child-processes">
+            <h2>🚀 Les Processus Enfants</h2>
+            <p>Node.js s'exécute sur un seul thread, ce qui est excellent pour l'I/O mais peut être limitant pour les tâches intensives en CPU. Le module `child_process` vous permet de créer de nouveaux processus, vous permettant ainsi d'exécuter des commandes externes ou de créer des processus "workers" pour tirer parti de plusieurs cœurs de CPU.</p>
+            <h3>Exemple : Exécuter une commande shell</h3>
+            <pre><code>const { exec } = require('child_process');
+
+// Exécuter la commande 'ls -lh'
+exec('ls -lh', (error, stdout, stderr) => {
+  if (error) {
+    console.error(`erreur exec : ${error}`);
+    return;
+  }
+  console.log(`stdout : ${stdout}`);
+  console.error(`stderr : ${stderr}`);
+});</code></pre>
+        </section>
+
+    </main>
+
+</body>
+</html>
